@@ -1,0 +1,45 @@
+# tidyinbox rules. Setup copies this file to rules.toml, which stays on your machine (git-ignored).
+#
+# Each query is plain Gmail search: paste it into Gmail's search box to see what it catches.
+# A message goes to the FIRST bucket it matches: it gets that label and leaves the inbox.
+# Whatever matches no bucket stays in the inbox. That is your important mail.
+# `python tidyinbox.py senders` lists who sends what stays: ideas for new rules.
+
+# Mail matching this never leaves the inbox, whatever the buckets say.
+# Add the senders that always matter to you, for example your bank or tax office:
+#   keep = 'is:starred OR from:(your-bank.example OR tax-office.example)'
+keep = 'is:starred OR subject:("security alert" OR "verification code" OR "sign-in" OR password)'
+
+# Senders you call spam. Real spam already lands in Gmail's own Spam folder;
+# this catches what slips through. Add addresses or whole domains.
+[[bucket]]
+label = "Sorted/Junk"
+query = 'from:(spammer@example.com OR junk.example)'
+
+# Put buckets for whole senders here, before the categories, so each lands in one folder:
+#   [[bucket]]
+#   label = "Sorted/Shops"
+#   query = 'from:(shop-one.example OR shop-two.example)'
+
+[[bucket]]
+label = "Sorted/Promotions"
+query = "category:promotions"
+
+[[bucket]]
+label = "Sorted/Social"
+query = "category:social"
+
+[[bucket]]
+label = "Sorted/Forums"
+query = "category:forums"
+
+# Receipts, bills, shipping, account notices.
+[[bucket]]
+label = "Sorted/Updates"
+query = "category:updates"
+
+# Newsletters Gmail leaves in Primary. Off by default: try it with a dry run first.
+# Last, so the categories go first; mail from personal addresses is left out.
+# [[bucket]]
+# label = "Sorted/Newsletters"
+# query = '(unsubscribe OR désabonner OR désinscrire) -from:(gmail.com OR yahoo.com OR outlook.com OR hotmail.com)'
